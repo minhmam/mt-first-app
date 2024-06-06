@@ -1,5 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input} from '@angular/core';
 import {TaskComponent} from "./task/task.component";
+import {Task} from "./task/task.model";
 
 @Component({
   selector: 'app-tasks',
@@ -10,13 +11,22 @@ import {TaskComponent} from "./task/task.component";
 })
 export class TasksComponent {
   // @Input({required: true}) name!: string;
+  @Input() addTask = new EventEmitter()
   @Input() user!: {
     name: string;
     id: string;
     avatar: string
   };
+  task: Task = {
+    id: 't4',
+    userId: 'u1',
+    title: 'Master Angular',
+    summary: 'Learn all the basic and advanced features of Angular and how to apply them.',
+    dueDate: '2025-12-31'
+  }
 
-  tasks = [
+
+  tasks: Task[] = [
     {
       id: 't1',
       userId: 'u1',
@@ -42,6 +52,22 @@ export class TasksComponent {
 
   get selectedUserTasks() {
     return this.tasks.filter((task) => task.userId === this.user.id);
+  }
+
+  onCompleteTask(id: string) {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+  }
+
+  onAddTask(task: Task) {
+    // this.addTask.emit(this.user.id)
+    // let task = {
+    //   id: 't4',
+    //   userId: this.user.id,
+    //   title: 'Master Java',
+    //   summary: 'Learn all the basic and advanced features of Angular and how to apply them.',
+    //   dueDate: '2025-12-31'
+    // }
+    this.tasks.push(task);
   }
 }
 
