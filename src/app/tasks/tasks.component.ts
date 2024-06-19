@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input} from '@angular/core';
 import {TaskComponent} from "./task/task.component";
-import {Task} from "./task/task.model";
+import { type NewTaskData, Task} from "./task/task.model";
 import {NewTaskComponent} from "./new-task/new-task.component";
 
 @Component({
@@ -19,14 +19,6 @@ export class TasksComponent {
     avatar: string
   };
   isAddingTask = false;
-  task: Task = {
-    id: 't4',
-    userId: 'u1',
-    title: 'Master Angular',
-    summary: 'Learn all the basic and advanced features of Angular and how to apply them.',
-    dueDate: '2025-12-31'
-  }
-
 
   tasks: Task[] = [
     {
@@ -60,13 +52,23 @@ export class TasksComponent {
     this.tasks = this.tasks.filter((task) => task.id !== id);
   }
 
-  onStartAddTask(task: Task) {
+  onStartAddTask() {
     this.isAddingTask = true;
-    this.tasks.push(task);
   }
 
   onCancelAddTask() {
     this.isAddingTask = false;
+  }
+
+  onAddTask(taskData: NewTaskData) {
+    this.isAddingTask = false;
+    this.tasks.unshift({
+        id: Math.random().toString(),
+        userId: this.user.id,
+        title: taskData.title,
+        summary: taskData.summary,
+        dueDate: taskData.date
+    })
   }
 }
 
